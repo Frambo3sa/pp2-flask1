@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Filmes</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #222;
+            color: #fff;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #ffcc00;
+            margin-bottom: 20px;
+        }
+
+        form {
+            background: #333;
+            padding: 20px;
+            margin: 20px auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            max-width: 500px;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="submit"] {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #555;
+            border-radius: 4px;
+            box-sizing: border-box;
+            background: #444;
+            color: #fff;
+            transition: background 0.3s;
+        }
+
+        input[type="submit"] {
+            background-color: #ffcc00;
+            color: #222;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #e6b800;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: #333;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #555;
+        }
+
+        th {
+            background-color: #444;
+        }
+
+        tr:hover {
+            background-color: #555;
+        }
+
+        tr:nth-child(even) {
+            background-color: #3a3a3a;
+        }
+
+        .filmao-button {
+            background-color: #ffcc00;
+            color: #222;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 20px;
+            display: inline-block;
+            transition: background 0.3s;
+        }
+
+        .filmao-button:hover {
+            background-color: #e6b800;
+        }
+    </style>
+</head>
+<body>
+    <h1>Adicionar Filme</h1>
+    <form method="post" action="/">
+        <input type="text" name="title" placeholder="Título" required>
+        <input type="text" name="genero" placeholder="Gênero" required>
+        <input type="number" step="0.1" name="duracao" placeholder="Duração (em horas)" required>
+        <input type="text" name="data_lancamento" placeholder="Data de Lançamento (YYYY-MM-DD)">
+        <input type="text" name="diretor" placeholder="Diretor" required>
+        <input type="submit" value="Adicionar">
+    </form>
+
+    <h1>Filmes</h1>
+    <table>
+        <tr>
+            <th>Título</th>
+            <th>Gênero</th>
+            <th>Duração</th>
+            <th>Data de Lançamento</th>
+            <th>Diretor</th>
+            <th>Ações</th>
+        </tr>
+        {% for filme in filmes %}
+        <tr>
+            <td>{{ filme.title }}</td>
+            <td>{{ filme.genero }}</td>
+            <td>{{ filme.duracao }}</td>
+            <td>{{ filme.data_lancamento }}</td>
+            <td>{{ filme.diretor }}</td>
+            <td>
+                <form method="post" action="/delete" style="display: inline">
+                    <input type="hidden" name="title" value="{{ filme.title }}">
+                    <input type="submit" value="Deletar">
+                </form>
+                <form method="post" action="/update" style="display: inline">
+                    <input type="text" name="newtitle" placeholder="Novo Título">
+                    <input type="hidden" name="oldtitle" value="{{ filme.title }}">
+                    <input type="text" name="newgenero" placeholder="Novo Gênero">
+                    <input type="number" step="0.1" name="newduracao" placeholder="Nova Duração">
+                    <input type="text" name="newdata" placeholder="Nova Data">
+                    <input type="text" name="newdiretor" placeholder="Novo Diretor">
+                    <input type="submit" value="Alterar">
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <form method="post" action="/filmao">
+        <button type="submit" class="filmao-button">Ir para a Página de Filmes</button>
+    </form>
+</body>
+</html>
